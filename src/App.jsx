@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import FileUpload from "./components/FileUpload";
 import ChatInterface from "./components/ChatInterface";
 
@@ -35,6 +37,8 @@ function App() {
           text: `Uploaded ${response.data.filename}. Ready to ask questions.`,
         },
       ]);
+      // Show success toast notification
+      toast.success(`PDF "${response.data.filename}" uploaded successfully!`);
     } catch (error) {
       console.error("Upload Error:", error);
       let errorMessage = "File upload failed. Please try again.";
@@ -44,6 +48,7 @@ function App() {
         errorMessage = "Upload failed: Could not reach server.";
       }
       setChatMessages([{ type: "error", text: errorMessage }]);
+      toast.error(errorMessage);
     } finally {
       setIsLoadingUpload(false);
     }
@@ -73,6 +78,7 @@ function App() {
       }
       const errorMessageObj = { type: "error", text: errorMessage };
       setChatMessages((prevMessages) => [...prevMessages, errorMessageObj]);
+      toast.error(errorMessage);
     } finally {
       setIsLoadingAnswer(false);
     }
@@ -120,6 +126,18 @@ function App() {
           />
         </div>
       </main>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={3}
+      />
     </div>
   );
 }

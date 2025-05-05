@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Tooltip } from "react-tooltip";
 
 function ChatInterface({
   chatMessages = [],
@@ -130,12 +131,19 @@ function ChatInterface({
         <div className="flex items-center relative shadow-sm rounded-lg overflow-hidden border border-gray-200">
           <input
             type="text"
-            placeholder="Send a message..."
+            placeholder={
+              isEnabled
+                ? "Ask a question about your PDF..."
+                : "Upload a PDF first to ask questions"
+            }
             value={question}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             disabled={!isEnabled || isLoadingAnswer}
             className="flex-1 py-3 px-4 focus:outline-none"
+            id="question-input"
+            data-tooltip-id="input-tooltip"
+            data-tooltip-content={!isEnabled ? "Please upload a PDF first" : ""}
           />
           <button
             onClick={handleSendClick}
@@ -158,6 +166,9 @@ function ChatInterface({
             </svg>
           </button>
         </div>
+        {!isEnabled && (
+          <Tooltip id="input-tooltip" place="top" effect="solid" />
+        )}
       </div>
     </div>
   );

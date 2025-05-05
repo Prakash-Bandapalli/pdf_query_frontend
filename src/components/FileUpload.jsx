@@ -1,8 +1,12 @@
+import { toast } from "react-toastify";
+
 function FileUpload({ onUpload, isLoading }) {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type === "application/pdf") {
       onUpload(file);
+    } else if (file) {
+      toast.error("Please upload a PDF file");
     }
   };
 
